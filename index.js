@@ -185,15 +185,15 @@ app.use(cors())
 
 app.get('/prices/', (req, res) => {
 
-    let item = db.filter((item)=>{
+    let itens = db.filter((item)=>{
         return (item.code == req.query.code && item.deposito == req.query.deposito)
     })
 
-    if(item.length != 0){
+    if(itens.length != 0){
         res.json({
             "sucesso": "Sim",
-            "valor_produto": item[0].valor,
-            "estoque": item[0].estoque
+            "valor_produto": itens[0].valor,
+            "estoque": itens[0].estoque
         })
     }
 
@@ -208,14 +208,14 @@ app.get('/prices/', (req, res) => {
 
 app.post('/estoque/', jsonParser,(req, res) => {
 
-    let item = db.filter((item)=>{
+    let itens = db.filter((item)=>{
         return (item.code == req.body.code && item.deposito == req.body.deposito)
     })
 
-    if(item.length != 0){
+    if(itens.length != 0){
         res.json({
             "sucesso": "Sim",
-            "estoque": item[0].estoque
+            "estoque": itens[0].estoque
         })
     }
 
