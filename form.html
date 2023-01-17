@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Cliente</title>
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        form {
+            margin-top: 10vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form div {
+            display: flex;
+            flex-direction: column;
+            width: 80vw;
+        }
+
+        input {
+            margin: .4rem 0;
+            height: 2rem;
+            padding: 10px;
+        }
+
+        label {
+            margin: .1rem 0;
+        }
+
+        button {
+            margin-top: 1rem;
+            height: 3rem;
+            background-color: #1a94ff;
+            border-color: #1A94FF;
+            border-radius: 5px;
+            border-style: solid;
+            border-width: 1px;
+            border-collapse: collapse;
+            color: #fff;
+            font-size: 17px;
+        }
+
+        button:hover {
+            background-color: #1aa3ff;
+        }
+    </style>
+
+    <form action="/create-contact" method="POST">
+        <h1>Novo Cliente</h1>
+        <div>
+            <label for="">Nome</label>
+            <input id="name" name="name" type="text">
+        </div>
+        <div>
+            <label for="">CNPJ</label>
+            <input id="cnpj" name="cnpj" type="text">
+        </div>
+        <div>
+            <label for="">Código do Cliente</label>
+            <input id="code" name="code" type="text">
+        </div>
+        <div>
+            <label for="">Telefone</label>
+            <input id="tel" name="tel" type="text">
+        </div>
+        <div>
+            <button>Enviar</button>
+        </div>
+    </form>
+</body>
+
+</html>

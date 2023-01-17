@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios')
 const bodyParser = require('body-parser')
-
+const path = require('path');
 
 const db = [
     {
@@ -174,6 +175,7 @@ const db = [
     },
 ]
 
+
 const jsonParser = bodyParser.json();
 
 const app = express();
@@ -182,14 +184,16 @@ const PORT = 5000 || process.env.PORT;
 const HOST = '0.0.0.0';
 
 app.use(cors())
+app.use(express.static(__dirname));
+app.use(express.urlencoded());
 
 app.get('/prices/', (req, res) => {
 
-    let itens = db.filter((item)=>{
+    let itens = db.filter((item) => {
         return (item.code == req.query.code && item.deposito == req.query.deposito)
     })
 
-    if(itens.length != 0){
+    if (itens.length != 0) {
         res.json({
             "sucesso": "Sim",
             "valor_produto": itens[0].valor,
@@ -197,33 +201,84 @@ app.get('/prices/', (req, res) => {
         })
     }
 
-    else{
+    else {
         res.json({
             "sucesso": "Não",
             "valor_produto": 0,
-            "estoque":0
+            "estoque": 0
         })
     }
 })
 
-app.post('/estoque/', jsonParser,(req, res) => {
+app.post('/estoque/', jsonParser, (req, res) => {
 
-    let itens = db.filter((item)=>{
+    let itens = db.filter((item) => {
         return (item.code == req.body.code && item.deposito == req.body.deposito)
     })
 
-    if(itens.length != 0){
+    if (itens.length != 0) {
         res.json({
             "sucesso": "Sim",
             "estoque": itens[0].estoque
         })
     }
 
-    else{
+    else {
         res.json({
             "sucesso": "Não",
-            "estoque":0
+            "estoque": 0
         })
     }
+})
+app.get('/create-contact/', (req, res) => {
+
+    res.sendFile(path.join(__dirname + "/form.html"))
+})
+
+app.post('/create-contact/', jsonParser, (req, res) => {
+    console.log(req.body)
+
+    const client = {
+        "Name": req.body.name,
+        "TypeId": 1,
+        "CNPJ": req.body.cnpj,
+        "Phones": [
+            {
+                "PhoneNumber": req.body.tel,
+                "TypeId": 1,
+                "CountryId": 76
+            },
+
+        ],
+        "OtherProperties": [{ FieldKey: "contact_955844D2-3A14-4EA6-B223-962FF575F25A", StringValue: req.body.code }]
+    }
+
+    const options = {
+        headers: {
+            "Content-Type": "application/json",
+            "User-Key": "576CB9A7DDA11D3AB616AC6E2C35BE48BD91ED2B0A7635C6533E46819E6D65725463DB62EEC6C9041C5FA8977A6E1FC28DB806B820ECC147ADC29163271631F2"
+        }
+    }
+
+    async function criarCliente() {
+        axios.post('https://public-api2.ploomes.com/Contacts', client, options)
+            .then((response) => {
+                console.log(response.status)
+                res.send(`
+                    <h1>Cliente Criado!</h1>
+                    <a href='/create-contact'>Clique aqui para voltar</a>
+                `)
+            }
+
+            )
+            .catch((error) => {
+                res.send(`<h1>Erro ao criar cliente. (${error})</h1>
+                <a href='/create-contact'>Clique aqui para voltar</a>`)
+            })
+
+
+    }
+
+    criarCliente();
 })
 app.listen(PORT, HOST);
