@@ -187,16 +187,26 @@ app.use(cors())
 app.use(express.static(__dirname));
 app.use(express.urlencoded());
 
+
+app.get('/', (req, res) => {
+
+
+    
+    res.json({ "status": "Ok!" })
+
+
+})
+
 app.get('/prices/', (req, res) => {
     console.log(req.query)
 
-    
+
 
     let itens = db.filter((item) => {
         return (item.code == req.query.code && item.deposito == req.query.deposito)
     })
 
-    if(!req.query.client_code){
+    if (!req.query.client_code) {
         res.json({
             "sucesso": "Não",
             "valor_produto": 0,
