@@ -6,169 +6,169 @@ const path = require('path');
 
 const db = [
     {
-        "code": "0F1",
+        "code": "P01",
         "deposito": 1,
         "valor": 10.74,
         "estoque": 80
     },
     {
-        "code": "0F2",
+        "code": "P02",
         "deposito": 1,
         "valor": 25.14,
         "estoque": 250
     },
     {
-        "code": "0F3",
+        "code": "P03",
         "deposito": 1,
         "valor": 57.12,
         "estoque": 36
     },
     {
-        "code": "0F4",
+        "code": "P04",
         "deposito": 1,
         "valor": 56.20,
         "estoque": 45
     },
     {
-        "code": "0F5",
+        "code": "P05",
         "deposito": 1,
         "valor": 55,
         "estoque": 100
     },
     {
-        "code": "0F6",
+        "code": "P06",
         "deposito": 1,
         "valor": 75.98,
         "estoque": 25
     },
     {
-        "code": "0F7",
+        "code": "P07",
         "deposito": 1,
         "valor": 152.70,
         "estoque": 450
     },
     {
-        "code": "0F8",
+        "code": "P08",
         "deposito": 1,
         "valor": 58.1,
         "estoque": 2
     },
     {
-        "code": "0F9",
+        "code": "P09",
         "deposito": 1,
         "valor": 95.45,
         "estoque": 100
     },
     {
-        "code": "0F10",
+        "code": "P10",
         "deposito": 1,
         "valor": 25.6,
         "estoque": 52
     },
     {
-        "code": "0F11",
+        "code": "P11",
         "deposito": 1,
         "valor": 54.36,
         "estoque": 90
     },
     {
-        "code": "0F12",
+        "code": "P12",
         "deposito": 1,
         "valor": 92.67,
         "estoque": 445
     },
     {
-        "code": "0F13",
+        "code": "P13",
         "deposito": 1,
         "valor": 85.60,
         "estoque": 60
     },
     {
-        "code": "0F14",
+        "code": "P14",
         "deposito": 1,
         "valor": 1.50,
         "estoque": 10
     },
     {
-        "code": "0F1",
+        "code": "P01",
         "deposito": 2,
         "valor": 8.45,
         "estoque": 1000
     },
     {
-        "code": "0F2",
+        "code": "P02",
         "deposito": 2,
         "valor": 6.90,
         "estoque": 500
     },
     {
-        "code": "0F3",
+        "code": "P03",
         "deposito": 2,
         "valor": 58.40,
         "estoque": 6000
     },
     {
-        "code": "0F4",
+        "code": "P04",
         "deposito": 2,
         "valor": 69.45,
         "estoque": 8450
     },
     {
-        "code": "0F5",
+        "code": "P05",
         "deposito": 2,
         "valor": 58.10,
         "estoque": 1000
     },
     {
-        "code": "0F6",
+        "code": "P06",
         "deposito": 2,
         "valor": 75.11,
         "estoque": 2451
     },
     {
-        "code": "0F7",
+        "code": "P07",
         "deposito": 2,
         "valor": 91,
         "estoque": 6652
     },
     {
-        "code": "0F8",
+        "code": "P08",
         "deposito": 2,
         "valor": 57.20,
-        "estoque": 5181
+        "estoque": 100
     },
     {
-        "code": "0F9",
+        "code": "P09",
         "deposito": 2,
         "valor": 65.10,
         "estoque": 4514
     },
     {
-        "code": "0F10",
+        "code": "P10",
         "deposito": 2,
         "valor": 57.4,
         "estoque": 8812
     },
     {
-        "code": "0F11",
+        "code": "P11",
         "deposito": 2,
         "valor": 81.20,
         "estoque": 821
     },
     {
-        "code": "0F12",
+        "code": "P12",
         "deposito": 2,
         "valor": 205.70,
         "estoque": 8451
     },
     {
-        "code": "0F13",
+        "code": "P13",
         "deposito": 2,
         "valor": 63.80,
         "estoque": 7841
     },
     {
-        "code": "0F14",
+        "code": "P14",
         "deposito": 2,
         "valor": 72.70,
         "estoque": 4115
@@ -188,15 +188,26 @@ app.use(express.static(__dirname));
 app.use(express.urlencoded());
 
 app.get('/prices/', (req, res) => {
+    console.log(req.query)
+
+    
 
     let itens = db.filter((item) => {
         return (item.code == req.query.code && item.deposito == req.query.deposito)
     })
 
-    if (itens.length != 0) {
+    if(!req.query.client_code){
+        res.json({
+            "sucesso": "Não",
+            "valor_produto": 0,
+            "estoque": 0
+        })
+    }
+
+    else if (itens.length != 0) {
         res.json({
             "sucesso": "Sim",
-            "valor_produto": itens[0].valor,
+            "price": itens[0].valor,
             "estoque": itens[0].estoque
         })
     }
