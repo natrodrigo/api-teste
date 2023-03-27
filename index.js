@@ -190,36 +190,30 @@ app.use(express.urlencoded());
 
 app.get('/', (req, res) => {
 
-
-    
     res.json({ "status": "Ok!" })
-
-
 })
 
 app.get('/prices/', (req, res) => {
-    console.log(req.query)
+    let code = '';
+    let deposito = '';
+    let itens
 
+    if (req.query.code && req.query.deposito && req.query.client_code) {
+        code = (req.query.code).toString()
+        deposito = Number(req.query.deposito)
+        client = req.query.client_code
 
-
-    let itens = db.filter((item) => {
-        return (item.code == req.query.code && item.deposito == req.query.deposito)
-    })
-
-    if (!req.query.client_code) {
-        res.json({
-            "sucesso": "Não",
-            "valor_produto": 0,
-            "estoque": 0
+        itens = db.filter((item) => {
+            return (item.code == req.query.code && item.deposito == req.query.deposito)
         })
-    }
 
-    else if (itens.length != 0) {
-        res.json({
-            "sucesso": "Sim",
-            "price": itens[0].valor,
-            "estoque": itens[0].estoque
-        })
+        if (itens.length != 0) {
+            res.json({
+                "sucesso": "Sim",
+                "price": itens[0].valor,
+                "estoque": itens[0].estoque
+            })
+        }
     }
 
     else {
@@ -229,6 +223,7 @@ app.get('/prices/', (req, res) => {
             "estoque": 0
         })
     }
+
 })
 
 app.post('/estoque/', jsonParser, (req, res) => {
