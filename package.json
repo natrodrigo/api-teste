@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/natrodrigo/api-teste/issues"
   },
-  "homepage": "https://github.com/natrodrigo/api-teste#readme"
+  "homepage": "https://github.com/natrodrigo/api-teste#readme",
+  "dependencies": {
+    "axios": "^1.3.4",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
 }

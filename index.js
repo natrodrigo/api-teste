@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios')
-const bodyParser = require('body-parser')
 const path = require('path');
 
 const db = [
@@ -176,7 +175,6 @@ const db = [
 ]
 
 
-const jsonParser = bodyParser.json();
 
 const app = express();
 
@@ -185,7 +183,8 @@ const HOST = '0.0.0.0';
 
 app.use(cors())
 app.use(express.static(__dirname));
-app.use(express.urlencoded());
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
@@ -226,7 +225,7 @@ app.get('/prices/', (req, res) => {
 
 })
 
-app.post('/estoque/', jsonParser, (req, res) => {
+app.post('/estoque/', (req, res) => {
 
     let itens = db.filter((item) => {
         return (item.code == req.body.code && item.deposito == req.body.deposito)
@@ -251,7 +250,7 @@ app.get('/create-contact/', (req, res) => {
     res.sendFile(path.join(__dirname + "/form.html"))
 })
 
-app.post('/create-contact/', jsonParser, (req, res) => {
+app.post('/create-contact/', (req, res) => {
     console.log(req.body)
 
     const client = {
